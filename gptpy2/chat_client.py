@@ -3,14 +3,20 @@ import socket
 import sys
 import signal
 import argparse
-from chatgpt import ChatGPT
-from utils import *
+from gptpy2.chatgpt import ChatGPT
+from gptpy2.utils import *
 
 
 class ChatClient:
     """A command line chat client using select"""
 
-    def __init__(self, name, host="localhost", port=7788):
+    def __init__(
+        self,
+        name,
+        openai_key_path,
+        host="localhost",
+        port=7788,
+    ):
         self.name = name
         self.connected = False
         self.host = host
@@ -18,13 +24,13 @@ class ChatClient:
 
         # Initial prompt
         self.prompt = f"[{name}@{socket.gethostname()}]> "
-        self.gpt = ChatGPT(secret_key_path="secret_key.txt")
+        self.gpt = ChatGPT(secret_key_path=openai_key_path)
 
         # Connect to server at port
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.connect((host, self.port))
-            print(f"Now connected to chat server@ port {self.port}")
+            self.sock.connect((self.host, self.port))
+            print(f"Now connected to chat server {self.host} port {self.port}")
             self.connected = True
 
             # Send my name...
@@ -35,7 +41,9 @@ class ChatClient:
             addr = data.split("CLIENT: ")[1]
             self.prompt = "[" + "@".join((self.name, addr)) + "]> "
         except socket.error as e:
-            print(f"Failed to connect to chat server @ port {self.port}")
+            print(
+                f"Failed to connect to chat server {self.host} port {self.port} : {e}"
+            )
             sys.exit(1)
 
     def cleanup(self):
@@ -93,5 +101,6 @@ if __name__ == "__main__":
     port = given_args.port
     name = given_args.name
 
+    # client = ChatClient(host="192.168.1.35", name=name, port=port)
     client = ChatClient(name=name, port=port)
     client.run()

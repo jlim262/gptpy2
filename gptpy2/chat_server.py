@@ -23,7 +23,15 @@ class ChatServer(object):
         # Catch keyboard interrupts
         signal.signal(signal.SIGINT, self.sighandler)
 
+        self.thread = threading.Thread(target=self.run)
+
         print("Server listening to port: {} ...".format(port))
+
+    def start(self):
+        self.thread.start()
+
+    def join(self):
+        self.thread.join()
 
     def sighandler(self, signum, frame):
         """Clean up client outputs"""
@@ -148,12 +156,11 @@ if __name__ == "__main__":
     name = given_args.name
 
     server = ChatServer(port=port)
-    # server.run()
 
-    task_thread = threading.Thread(target=server.run)
-    task_thread.start()
+    server.start()
+    import random
     while True:
         time.sleep(1)
-        # server.send('ping')
+        server.send('ping' + str(random.randint(1, 10000)))
 
-    task_thread.join()
+    server.join()

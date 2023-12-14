@@ -1,26 +1,6 @@
-# import subprocess
-# cmd = ["pip", "install", "openai"]
-# subprocess.call(cmd)
 
-import numpy as np
-import random
-import openai
-import ast
-import os
-
-from aiohttp import ClientSession
-from tqdm import tqdm
 import time
-
-
 from openai import OpenAI
-
-
-from tenacity import (
-    retry,
-    stop_after_attempt,
-    wait_random_exponential,
-)  # for exponential backoff
 
 
 class ChatGPT(object):
@@ -117,19 +97,7 @@ class ChatGPT(object):
                 break
 
         return "error"
-
-    @retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
-    def get_completion_from_messages(self, messages, temperature):
-        # max number of concurrent requests
-        # async with request_semaphore: Sleep for the delay
-        time.sleep(self.delay_in_seconds)
-        response = openai.ChatCompletion.create(
-            model=self.model,
-            messages=messages,
-            temperature=temperature,  # this is the degree of randomness of the model's output
-        )
-        return response.choices[0].message["content"]
-
+    
 
 if __name__ == "__main__":
     gpt = ChatGPT(secret_key_path="secret_key.txt")
