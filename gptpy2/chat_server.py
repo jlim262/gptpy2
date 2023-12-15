@@ -6,7 +6,7 @@ import argparse
 import threading
 import time
 
-from utils import *
+from gptpy2.utils import *
 
 
 class ChatServer(object):
