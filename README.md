@@ -1,17 +1,42 @@
 # gpt-py2
+gptpy2 is a straightforward socket server, designed to work with python2. It enables the sending of messages to clients that are connected to it.
 
+## Prerequisites
+Before beginning, ensure that you have Python 2.7 installed on your system.
 
-## install miniconda
+## Installing gptpy2
+To install gptpy2, clone the GitHub repository and install it using the setup script:
+```
+git clone git@github.com:jlim262/gpt-py2.git
+python setup.py install
+```
 
-## python2 robot server
+## Usage Example
+To use gptpy2, simply import the ChatServer class, create an instance with specified host and port, and then call the `start()` method. 
+```python
+from gptpy2.chat_server import ChatServer
 
-conda create -n py2 python=2.7
-conda activate py2
+server = ChatServer(host='localhost', port=7788)
+server.start()
+```
 
-python gptpy2/sock_client.py
-python gptpy2/sock_server.py
-python gptpy2/sock_server.py --name robot --port 7788
+Here's a basic example demonstrating how to send messages to clients:
 
+```python
+import random
+import time
+from gptpy2.chat_server import ChatServer
 
+server = ChatServer(host='localhost', port=7788)
+server.start()
 
-## python3 
+# Sending random math questions to clients
+for _ in range(10):
+    time.sleep(10)
+    prompt = str(random.randint(1, 10000)) + ' * ' + str(random.randint(1, 10000)) + ' = ?'
+    print('>> ' + prompt)
+    server.send(prompt)
+
+server.join()
+```
+In this example, the server sends out random multiplication questions to clients every 10 seconds.
