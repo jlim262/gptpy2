@@ -7,7 +7,8 @@ Before beginning, ensure that you have Python 2.7 installed on your system.
 ## Installing gptpy2
 To install gptpy2, clone the GitHub repository and install it using the setup script:
 ```
-git clone git@github.com:jlim262/gpt-py2.git
+git clone git@github.com:jlim262/gptpy2.git
+cd gptpy2
 python setup.py install
 ```
 
