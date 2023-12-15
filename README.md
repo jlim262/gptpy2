@@ -1,5 +1,5 @@
-# gpt-py2
-gptpy2 is a straightforward socket server, designed to work with python2. It enables the sending of messages to clients that are connected to it.
+# gptpy2
+gptpy2 is a straightforward socket server, designed to work with python2. It enables the sending of messages to [gpt clients](https://github.com/jlim262/gptpy3) that are connected to it.
 
 ## Prerequisites
 Before beginning, ensure that you have Python 2.7 installed on your system.
